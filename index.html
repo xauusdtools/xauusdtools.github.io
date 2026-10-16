@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>XAUUSD Tools — free open-source gold trading calculators</title>
+<meta name="description" content="Free, open-source XAUUSD calculators that run in your browser: gold pip value, lot size from risk, position size, profit/loss and margin, with formulas and worked examples.">
+<link rel="canonical" href="https://xauusdtools.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="XAUUSD Tools — free open-source gold trading calculators">
+<meta property="og:description" content="Gold pip value, lot size, position size, P/L and margin calculators with formulas and hypothetical examples. MIT licensed.">
+<meta property="og:url" content="https://xauusdtools.github.io/">
+<meta property="og:site_name" content="XAUUSD Tools">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="style.css">
+<script type="application/ld+json">
+[{"@context":"https://schema.org","@type":"WebSite","name":"XAUUSD Tools","url":"https://xauusdtools.github.io/"},
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"XAUUSD Calculator","applicationCategory":"FinanceApplication","operatingSystem":"Any (web browser, Node.js)","url":"https://xauusdtools.github.io/","codeRepository":"https://github.com/xauusdtools/xauusd-calculator","license":"https://opensource.org/licenses/MIT","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}]
+</script>
+</head>
+<body>
+<header>
+<h1><span>XAUUSD Tools</span> — free open-source gold trading calculators</h1>
+<p>Small, transparent calculators for spot gold (XAUUSD). Everything runs locally in your browser, and the code is MIT-licensed on <a href="https://github.com/xauusdtools/xauusd-calculator">GitHub (xauusd-calculator)</a>.</p>
+<nav><a href="#pip">Pip value</a><a href="#lot">Lot size</a><a href="#position">Position size</a><a href="#pl">Profit/Loss</a><a href="#margin">Margin</a></nav>
+</header>
+<main>
+<h2>The conventions used</h2>
+<p>Most brokers quote gold to two decimals and treat a <strong>$0.10 move as 1 pip</strong>. A standard lot is <strong>100 troy ounces</strong>, so a $0.10 move on 1 lot is worth <strong>$10</strong>. Some brokers use different contract sizes or pip definitions, so check your contract specification. If pips are new to you, this <a href="https://goldsignalsdaily.com/guides/xauusd-pip-value">guide to how XAUUSD pip value is calculated</a> walks through it step by step.</p>
+
+<section class="calc" id="pip"><h2>Pip value</h2>
+<p>Formula: <code>pip value = lots × 100 oz × $0.10</code>. Hypothetical example: 0.25 lots → 0.25 × 100 × 0.10 = <strong>$2.50 per pip</strong>.</p>
+<form id="f-pip"><label>Lots<input id="pip-lots" type="number" step="0.01" value="1"></label></form>
+<output id="o-pip"></output></section>
+
+<section class="calc" id="lot"><h2>Lot size from risk</h2>
+<p>Formula: <code>lots = (balance × risk%) ÷ (stop distance in $ × 100 oz)</code>. Hypothetical example: $10,000 balance, 1% risk ($100), $5.00 stop → 100 ÷ (5 × 100) = <strong>0.20 lots</strong>. Results round down to 0.01 lots so you never exceed your risk.</p>
+<form id="f-lot"><label>Balance ($)<input id="lot-bal" type="number" value="10000"></label><label>Risk (%)<input id="lot-risk" type="number" step="0.1" value="1"></label><label>Stop distance ($)<input id="lot-stop" type="number" step="0.01" value="5"></label></form>
+<output id="o-lot"></output>
+<p>Prefer a fuller interface? Try this <a href="https://goldsignalsdaily.com/tools/lot-size-calculator">gold lot size calculator</a>.</p></section>
+
+<section class="calc" id="position"><h2>Position size from entry and stop</h2>
+<p>Same idea, but you enter prices: stop distance = |entry − stop|. Hypothetical example: entry 2,400.00, stop 2,392.00 (80 pips, $8.00), $5,000 balance at 2% ($100) → 100 ÷ 800 = <strong>0.12 lots</strong>.</p>
+<form id="f-pos"><label>Balance ($)<input id="pos-bal" type="number" value="5000"></label><label>Risk (%)<input id="pos-risk" type="number" step="0.1" value="2"></label><label>Entry<input id="pos-entry" type="number" step="0.01" value="2400"></label><label>Stop<input id="pos-stop" type="number" step="0.01" value="2392"></label></form>
+<output id="o-pos"></output></section>
+
+<section class="calc" id="pl"><h2>Profit / loss</h2>
+<p>Formula: <code>P/L = (exit − entry) × lots × 100</code> for a buy (reversed for a sell). Hypothetical example: buy 0.50 lots at 2,400.00, exit 2,410.00 → 10 × 0.5 × 100 = <strong>$500</strong>. Spread, commission and swap are not included.</p>
+<form id="f-pl"><label>Side<select id="pl-side"><option value="buy">Buy</option><option value="sell">Sell</option></select></label><label>Entry<input id="pl-entry" type="number" step="0.01" value="2400"></label><label>Exit<input id="pl-exit" type="number" step="0.01" value="2410"></label><label>Lots<input id="pl-lots" type="number" step="0.01" value="0.5"></label></form>
+<output id="o-pl"></output></section>
+
+<section class="calc" id="margin"><h2>Margin</h2>
+<p>Formula: <code>margin = lots × 100 × price ÷ leverage</code>. Hypothetical example: 1 lot at 2,400.00 with 1:100 leverage → 240,000 ÷ 100 = <strong>$2,400</strong>. Margin is what the broker holds, not what you risk — your stop decides that. More on this in <a href="https://xauusdtools.blogspot.com/2026/10/margin-vs-risk-on-gold-xauusd-practical.html">Margin vs Risk on Gold (XAUUSD)</a>.</p>
+<form id="f-mg"><label>Lots<input id="mg-lots" type="number" step="0.01" value="1"></label><label>Price<input id="mg-price" type="number" step="0.01" value="2400"></label><label>Leverage (1:x)<input id="mg-lev" type="number" value="100"></label></form>
+<output id="o-mg"></output></section>
+
+<h2>Use it in your own code</h2>
+<p>The same functions power this page. Clone <a href="https://github.com/xauusdtools/xauusd-calculator">xauusdtools/xauusd-calculator</a> and import <code>pipValue</code>, <code>lotSize</code>, <code>positionSize</code>, <code>profitLoss</code>, <code>riskReward</code> or <code>margin</code>. For a quick check without code there is also an online <a href="https://goldsignalsdaily.com/tools/xauusd-pip-calculator">XAUUSD pip calculator</a>.</p>
+</main>
+<footer>
+<p><strong>Risk disclaimer:</strong> These tools are for education only and are not financial advice. All examples are hypothetical and use illustrative prices. Trading leveraged products such as gold CFDs carries a high risk of loss and may not be suitable for everyone. Verify contract sizes, pip definitions and margin rules with your broker.</p>
+<p>MIT licensed · <a href="https://github.com/xauusdtools">github.com/xauusdtools</a></p>
+</footer>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
